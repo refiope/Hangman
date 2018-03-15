@@ -9,4 +9,5 @@ else
   puts "Would you like to continue from last game? Y/n"
   answer = gets.chomp
   load_game if answer[0].downcase == 'y'
+  new_game if answer[0].downcase == 'n'
 end

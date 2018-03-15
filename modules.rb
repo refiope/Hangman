@@ -1,4 +1,5 @@
 module HangMethods
+  #play new game with new random word
   def new_game
     answer = get_random_word
     veiled_answer = get_veiled_word(answer)
@@ -12,7 +13,7 @@ module HangMethods
       save_file request_save
     end
   end
-
+  #load info from save.txt and play game
   def load_game
     data = File.read("save.txt")
     load_game = Game.from_json data
@@ -22,7 +23,7 @@ module HangMethods
       save_file request_save
     end
   end
-
+  #save info on save.txt file
   def save_file info
     save_game = Game.new(info[0], info[1], info[2], info[3], info[4])
     File.open("save.txt", "w") do |file|

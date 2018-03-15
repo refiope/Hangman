@@ -17,12 +17,6 @@ class Game
     @save_info = play_loop(@total_tries, @current_try, @word, @veiled_word, @save)
   end
 
-  def display_variables
-    puts @word.inspect
-    puts @veiled_word.inspect
-    puts @current_try.inspect
-  end
-
   def to_json
     { :word => @word,
       :veiled_word => @veiled_word,
