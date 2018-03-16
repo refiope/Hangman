@@ -1,4 +1,4 @@
-require './modules.rb'
+require './lib/modules.rb'
 require 'json'
 
 class Game

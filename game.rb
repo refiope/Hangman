@@ -1,5 +1,5 @@
-require './classes.rb'
-require './modules.rb'
+require './lib/classes.rb'
+require './lib/modules.rb'
 
 include HangMethods
 #New_game or load_game

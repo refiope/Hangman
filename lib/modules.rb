@@ -32,7 +32,7 @@ module HangMethods
   end
   #getting random word from 5desk.txt that is between 5 to 13 characters
   def get_random_word
-    word = File.read("5desk.txt").split.find_all { |word| word.length > 4 && word.length < 13 }
+    word = File.read("dic/5desk.txt").split.find_all { |word| word.length > 4 && word.length < 13 }
     return word.sample(1).join
   end
   #getting '_'s based on the length of the random word
@@ -74,40 +74,47 @@ module HangMethods
     print "\n\n"
   end
   #main loop for playing the game: a lot of helper_methods are used.
-  #helper method used: #get_unveiled, #show_unveiled, #right_guess, #check_win || lost
+  #helper method used: #get_unveiled, #show_unveiled, #right_guess, #game_over
   def play_loop (total, current, word, veiled_word, save)
-    while (total - current != 0 && save == false) do
+    while (total - current != 0) do
       show_unveiled (veiled_word)
       guess = player_input
+      #checking guess and reacting to guess
       if guess == 'save'
-        save = true
+        return [word, veiled_word, current, total, false]
+        break
       elsif right_guess(word, veiled_word, guess)
         veiled_word = get_unveiled(word, veiled_word, guess)
+        break if game_over(total, current, word, veiled_word, guess)
       else
-        current += 1 #<= this increment prevented me from making this function shorter
-        if check_lost(total, current)
-          puts "You Lost!"
-          puts "The word was: #{word}"
-          break
-        else
-          puts "You tried #{guess[0]}. It's wrong! Try again."
-          puts "You have #{total - current} tries left."
-        end
-      end
-
-      if check_win(word, veiled_word)
-        puts "Answer is: #{word}"
-        puts "You Won!"
-        break
+        #try is spent
+        current += 1
+        break if game_over(total, current, word, veiled_word, guess)
       end
     end
-    return [word, veiled_word, current, total, false] if save == true
   end
-  #helper_methods below used in #play_loop
+  #main method for checking if game is over and announcing result: used in #play_loop
+  def game_over (total, current, word, veiled_word, guess)
+    if check_lost(total, current)
+      puts "You Lost!"
+      puts "The word was: #{word}"
+      File.open("save.txt", "w") {}
+      return true
+    elsif check_win(word, veiled_word)
+      puts "Answer is: #{word}"
+      puts "You Won!"
+      File.open("save.txt", "w") {}
+      return true
+    else
+      puts "You tried #{guess[0]}. It's wrong! Try again."
+      puts "You have #{total - current} tries left."
+    end
+  end
+
   def right_guess (word, veiled_word, guess)
     return true if word.downcase.include? guess
   end
-
+  #below methods used in #gave_over
   def check_win (word, veiled_word)
     return true if word == veiled_word.join
   end
