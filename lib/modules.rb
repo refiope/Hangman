@@ -87,7 +87,7 @@ module HangMethods
         veiled_word = get_unveiled(word, veiled_word, guess)
         break if game_over(total, current, word, veiled_word, guess)
       else
-        #try is spent
+        #try is spent since wrong guess
         current += 1
         break if game_over(total, current, word, veiled_word, guess)
       end
